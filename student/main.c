@@ -62,7 +62,7 @@ void print_menu(){
     printf("Menu options:\n");
     printf("\t1. New game.\n");  // LAB1 - basic lab for creating board, pieces and movements
                                  // LAB1 - extend game with GameState data structure, current score, best score
-                                 //      - also add standard (4x4) with a posible extension, read board from command line  
+                                 //      - also add standard (4x4) with a possible extension, read board from command line  
     printf("\t2. Save game.\n"); // LAB2 - Writing file
     printf("\t3. Load game.\n"); // LAB2 - Reading file
     printf("\t4. Resume game.\n"); // LAB2 - Continue game after reading file

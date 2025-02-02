@@ -148,22 +148,38 @@ int remove_completed_lines(char board[MAX_ROWS][MAX_COLUMNS]){
 /********************************************************/
 
 void init_game_state(GameState *game_state){
-    // ToDo in LAB 1
+    game_state->score = 0;
+    for(int r=0; r<MAX_ROWS; ++r)
+        for(int c=0; c<MAX_COLUMNS; ++c)
+            game_state->board[r][c] = '.';
+    get_new_random_piece(game_state);
 }
 
 
 bool is_terminal(char board[MAX_ROWS][MAX_COLUMNS]){
-    // ToDo in LAB 1
+    for (int i = 0; i < MAX_ROWS; i++) {
+        for (int j = 0; j < MAX_COLUMNS; j++) {
+            if (board[i][j] == 'X') return true;
+        }
+    }
     return false;
 }
 
 
 void move_piece(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option){
-    // ToDo in LAB 1
+    if (option == MOVE_LEFT && !(is_collision(board, piece_info))) {
+        piece_info->at_col--;
+    } else if (option == MOVE_RIGHT && !(is_collision(board, piece_info))) {
+        piece_info->at_col++;
+    }
 }
 
 void rotate_piece(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option){
-    // ToDo in LAB 1
+    if (option == ROTATE_CW && !(is_collision(board, piece_info))) {
+        rotate_clockwise(&(piece_info->p));
+    } else if (option == ROTATE_CCW && !(is_collision(board, piece_info))) {
+        rotate_counter_clockwise(&(piece_info->p));
+    }
 }
 /********************************************************/
 /******* LAB 1 - functions to program (end here) ********/

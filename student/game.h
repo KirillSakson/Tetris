@@ -6,13 +6,23 @@
 #include "pieces.h"
 
 /// ToDo in LAB 1 - define macros MAX_ROWS and MAX_COLUMNS
+#define MAX_ROWS 15
+#define MAX_COLUMNS 12
 
-typedef struct{
+typedef struct
+{
     // ToDo in LAB 1 - define data structure
+    Piece p;
+    int at_row;
+    int at_col;
 } PieceInfo;
 
-typedef struct{
+typedef struct
+{
     // ToDo in LAB 1 - define data structure
+    int score;
+    char board[MAX_ROWS][MAX_COLUMNS];
+    PieceInfo current_piece;
 } GameState;
 
 /// Implemented functions
@@ -35,6 +45,4 @@ void rotate(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option
 /// Implemented functions
 void run_turn(GameState *game_state, int option);
 
-
 #endif
-
