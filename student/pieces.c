@@ -6,16 +6,16 @@ void init_piece(Piece *p)
         {'.', '.', '.', '.'},
         {'.', '.', '.', '.'},
         {'.', '.', '.', '.'},
-        {'.', '.', '.', '.'}};
+        {'.', '.', '.', '.'}};    // initializing the board
     for (int i = 0; i < PIECE_SIZE; ++i)
     {
         for (int j = 0; j < PIECE_SIZE; ++j)
         {
-            p->board[i][j] = initial_board[i][j];
+            p->board[i][j] = initial_board[i][j];    // initial board will take the piece's shape
         }
     }
-    p->rows = 0;
-    p->cols = 0;
+    p->rows = 0;    // piece rows to 0
+    p->cols = 0;    // piece columns to 0
 }
 
 void print_piece(Piece p)
@@ -38,6 +38,7 @@ void rotate_counter_clockwise(Piece *p)
         for (int j = 0; j < PIECE_SIZE; ++j)
         {
             p->board[i][j] = p->board[-j][i];
+            // rotation--> by changing coordinates and inversing the first one
         }
     }
 }
@@ -47,6 +48,7 @@ void rotate_clockwise(Piece *p)
     for (int i = 0; i < 3; ++i)
     {
         rotate_counter_clockwise(p);
+        // rotating 3 times counter clockwise == 1 time clockwise; 2 times counter clockwise == 2 times clockwise, and so on
     }
 }
 
