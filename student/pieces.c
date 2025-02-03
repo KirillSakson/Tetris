@@ -46,7 +46,7 @@ void rotate_clockwise(Piece *p)
 {
     for (int i = 0; i < 3; ++i)
     {
-        rotate_clockwise(p);
+        rotate_counter_clockwise(p);
     }
 }
 
