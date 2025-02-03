@@ -148,17 +148,17 @@ int remove_completed_lines(char board[MAX_ROWS][MAX_COLUMNS]){
 /********************************************************/
 
 void init_game_state(GameState *game_state){
-    game_state->score = 0;
+    game_state->score = 0;		// setting score to 0
     for(int r=0; r<MAX_ROWS; ++r)
         for(int c=0; c<MAX_COLUMNS; ++c)
-            game_state->board[r][c] = '.';
-    get_new_random_piece(game_state);
+            game_state->board[r][c] = '.';	// initialize all chars in board with '.'
+    get_new_random_piece(game_state);		// getting random piece to spawn area
 }
 
 
 bool is_terminal(char board[MAX_ROWS][MAX_COLUMNS]){
-    for (int i = 0; i < MAX_ROWS; i++) {
-        for (int j = 0; j < MAX_COLUMNS; j++) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
             if (board[i][j] == 'X') return true;
         }
     }
