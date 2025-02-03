@@ -9,7 +9,12 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "game.c",
+                "main.c",
+                "pieces.c",
+                "session.c",
+                "utils.c"
             ],
             "options": {
                 "cwd": "${fileDirname}"
