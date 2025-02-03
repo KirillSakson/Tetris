@@ -159,7 +159,7 @@ void init_game_state(GameState *game_state){
 bool is_terminal(char board[MAX_ROWS][MAX_COLUMNS]){
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (board[i][j] == 'X') return true;
+            if (board[i][j] == 'X') return true;	// a piece blocks the spawn --> end of game
         }
     }
     return false;
@@ -168,17 +168,17 @@ bool is_terminal(char board[MAX_ROWS][MAX_COLUMNS]){
 
 void move_piece(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option){
     if (option == MOVE_LEFT && !(is_collision(board, piece_info))) {
-        piece_info->at_col--;
+        piece_info->at_col--;	// move left and there can not be collisions
     } else if (option == MOVE_RIGHT && !(is_collision(board, piece_info))) {
-        piece_info->at_col++;
+        piece_info->at_col++;	// move right and there can not be collisions
     }
 }
 
 void rotate_piece(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option){
     if (option == ROTATE_CW && !(is_collision(board, piece_info))) {
-        rotate_clockwise(&(piece_info->p));
+        rotate_clockwise(&(piece_info->p));	// rotate clockwise and there are no collisions
     } else if (option == ROTATE_CCW && !(is_collision(board, piece_info))) {
-        rotate_counter_clockwise(&(piece_info->p));
+        rotate_counter_clockwise(&(piece_info->p));	// rotate counter clockwise and there are no collisions
     }
 }
 /********************************************************/
