@@ -149,17 +149,21 @@ int remove_completed_lines(char board[MAX_ROWS][MAX_COLUMNS]){
 
 void init_game_state(GameState *game_state){
     game_state->score = 0;		// setting score to 0
-    for(int r=0; r<MAX_ROWS; ++r)
-        for(int c=0; c<MAX_COLUMNS; ++c)
+    for(int r=0; r<MAX_ROWS; r++){
+        for(int c=0; c<MAX_COLUMNS; c++){
             game_state->board[r][c] = '.';	// initialize all chars in board with '.'
+        }
+    }
     get_new_random_piece(game_state);		// getting random piece to spawn area
 }
 
 
 bool is_terminal(char board[MAX_ROWS][MAX_COLUMNS]){
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (board[i][j] == 'X') return true;	// a piece blocks the spawn --> end of game
+    for (size_t i = 0; i < 4; i++) {
+        for (size_t j = 0; j < MAX_COLUMNS; j++) {
+            if (board[i][j] == 'X'){ 
+                return true;	// a piece blocks the spawn --> end of game
+            }
         }
     }
     return false;
@@ -167,19 +171,36 @@ bool is_terminal(char board[MAX_ROWS][MAX_COLUMNS]){
 
 
 void move_piece(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option){
-    if (option == MOVE_LEFT && !(is_collision(board, piece_info))) {
-        piece_info->at_col--;	// move left and there can not be collisions
-    } else if (option == MOVE_RIGHT && !(is_collision(board, piece_info))) {
-        piece_info->at_col++;	// move right and there can not be collisions
+    if (option == MOVE_LEFT) {
+        piece_info->at_col--;	// move left
+        if (is_collision(board, piece_info)) {
+            piece_info->at_col++;   // move right if there is collision
+        }
+    } else if (option == MOVE_RIGHT) {
+        piece_info->at_col++;	// move right
+        if (is_collision(board, piece_info)) {
+            piece_info->at_col--;   // move left if there is collision
+        }
     }
 }
 
 void rotate_piece(char board[MAX_ROWS][MAX_COLUMNS], PieceInfo *piece_info, int option){
-    if (option == ROTATE_CW && !(is_collision(board, piece_info))) {
-        rotate_clockwise(&(piece_info->p));	// rotate clockwise and there are no collisions
-    } else if (option == ROTATE_CCW && !(is_collision(board, piece_info))) {
-        rotate_counter_clockwise(&(piece_info->p));	// rotate counter clockwise and there are no collisions
+    Piece temp = piece_info->p;
+    if (option == ROTATE_CW) {
+        rotate_clockwise(&temp);
+    } 
+    else if (option == ROTATE_CCW) {
+        rotate_counter_clockwise(&temp);
     }
+
+    PieceInfo temp_info = *piece_info;
+    temp_info.p = temp;
+
+    if (!is_collision(board, &temp_info)) {
+        piece_info->p = temp;
+    }
+    // rotating clockwise or counter clockwise a given piece
+    // creating a temporary piece to check if it collides and, if not, then rotate the given piece
 }
 /********************************************************/
 /******* LAB 1 - functions to program (end here) ********/
@@ -210,4 +231,3 @@ void run_turn(GameState *game_state, int option){
             get_new_random_piece(game_state);
 	}
 }
-
