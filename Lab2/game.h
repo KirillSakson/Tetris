@@ -5,8 +5,8 @@
 #include "utils.h"
 #include "pieces.h"
 
-#define MIN_ROWS 10
-#define MIN_COLUMNS 6
+#define MIN_ROWS 10  // minimum nº of rows to play the game
+#define MIN_COLUMNS 6  // minimum nº of columns to play the game
 
 typedef struct {
     Piece p;
@@ -18,7 +18,7 @@ typedef struct {
     int score;
     int rows;
     int columns;
-    char **board;
+    char **board;  // refactored board
     PieceInfo current_piece;
 } GameState;
 
@@ -35,7 +35,7 @@ bool is_collision(GameState *game_state);
 /**** LAB 1 - functions to program (start here) ****/
 void init_game_state(GameState *game_state);
 void restart_game_state(GameState *game_state);
-void free_game_state(GameState *game_state);
+void free_game_state(GameState *game_state);  // free dynamically allocated memory
 bool is_terminal(GameState *game_state); // True if contains X values in TOP-4 rows
 void move(GameState *game_state, int option);
 void rotate(GameState *game_state, int option);
