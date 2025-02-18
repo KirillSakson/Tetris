@@ -2,13 +2,8 @@
 #include "game.h"
 
 void run_game(Session *session){
+    // main function which runs the current game
     GameState *game_state = &session->current_game_state;
-    /*
-    printf("\nEnter the number of rows: ");
-    scanf("%d", &session->current_game_state.rows);
-    printf("\nEnter the number of columns: ");
-    scanf("%d", &session->current_game_state.columns);
-    */
 
     bool finish_game; 
 
@@ -41,7 +36,7 @@ void run_game(Session *session){
         session->best_score = max(session->best_score, game_state->score);
         
         // 5. Add new number
-        finish_game = is_terminal(game_state);
+        finish_game = is_terminal(game_state);  // is_terminal gets only game_state
     }while(!finish_game);
 
     printf("*** GAME OVER ***\n");
@@ -49,15 +44,17 @@ void run_game(Session *session){
 }
 
 void new_game(Session *session){
+    // starts a new game
     restart_session_game_state(session);
     run_game(session);
 }
 
 void save_game(Session *session){
-    char save_file_name[30];
+    // saves current game in a file, so it can be accessed in future
+    char save_file_name[30];  // file's name
     printf("Enter the file name: ");
     scanf("%s", save_file_name);
-    FILE *file = fopen(save_file_name, "w");
+    FILE *file = fopen(save_file_name, "w");  // open file to write the data inside
     fprintf(file, "Score: %d\n", session->current_game_state.score);
     fprintf(file, "PieceInfo:\n");
     fprintf(file, "at_row: %d\n", session->current_game_state.current_piece.at_row);
@@ -74,14 +71,15 @@ void save_game(Session *session){
     for (int i = 0; i<session->current_game_state.rows; ++i) {
         fprintf(file, "%s\n", session->current_game_state.board[i]);
     }
-    fclose(file);
+    fclose(file);  // close the file after writing the data into the file
 }
 
 void load_game(Session *session){
-    char load_file_name[30];
+    // loads the game from an existing file, to continue playing it
+    char load_file_name[30];  // name of the file to be loaded
     printf("Enter the file name: ");
     scanf("%s", load_file_name);
-    FILE *file = fopen(load_file_name, "r");
+    FILE *file = fopen(load_file_name, "r");  // open file in read-only mode
     fscanf(file, "Score: %d\n\n", &session->current_game_state.score);
     fscanf(file, "PieceInfo:\nat_row: %d\n", &session->current_game_state.current_piece.at_row);
     fscanf(file, "at_col: %d\n", &session->current_game_state.current_piece.at_col);
@@ -98,19 +96,16 @@ void load_game(Session *session){
     for (int i=0;i<session->current_game_state.rows; ++i) {
         session->current_game_state.board[i] = malloc(sizeof(char) * session->current_game_state.columns);
     }
-    /*
-    // calling make_board
-    make_board(session);
-    */
 
     // loading board data from the file
     for (int i = 0; i<session->current_game_state.rows; ++i) {
         fscanf(file, "%s\n", session->current_game_state.board[i]);
     }
-    fclose(file);
+    fclose(file);  // close the file after reading and loading the data from the file
 }
 
 void resume_game(Session *session){
+    // to resume the game loaded or not into the game_state from the file
     run_game(session);
 }
 
@@ -127,6 +122,7 @@ void print_menu(){
 
 
 void run(Session *session){
+    // manipulates which game should be loaded, stored or resumed, or created a new game
     int option;
     do{
         print_menu();
@@ -149,7 +145,7 @@ void run(Session *session){
             resume_game(session);
             break;
         case EXIT:
-            free_game_state(&session->current_game_state);
+            free_game_state(&session->current_game_state);  // release dynamically allocated memory during the session
             break;
         }
     }while(option != EXIT);
