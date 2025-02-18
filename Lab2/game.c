@@ -24,13 +24,14 @@ bool is_valid_option(int option){
 }
 
 
-void print_line(int columns){
+void print_line(int columns){  // as nº of columns is variable, we need an argument (nº of columns)
     for(int c=-1; c<columns+1; ++c) 
     	printf("-");
     printf("\n");
 }
 
 void print_board(GameState *game_state){
+    // prints the board of the current game
     Piece *piece = &game_state->current_piece.p;
     int p_row_size = piece->rows;
     int p_col_size = piece->cols;
@@ -93,6 +94,7 @@ void get_new_random_piece(GameState *game_state){
 }
 
 void block_current_piece(GameState *game_state){
+    // fix the piece when it arrives to a stable position (cannot fall further on)
     Piece *piece = &game_state->current_piece.p;
     int row = game_state->current_piece.at_row;
     int col = game_state->current_piece.at_col;
@@ -102,7 +104,8 @@ void block_current_piece(GameState *game_state){
                 game_state->board[row+i][col+j] = 'X';
 }
 
-bool is_collision(GameState *game_state){
+bool is_collision(GameState *game_state){  // passing as argument only address of game_state
+    // verifies if the piece collides with existing fixed pieces
     PieceInfo *piece_info = &(game_state->current_piece);
     Piece *piece = &piece_info->p;
     int p_row_size = piece->rows;
@@ -142,6 +145,7 @@ void make_board(GameState *game_state) {
 }
 
 void free_game_state(GameState *game_state) {
+    // This function frees up dynamically allocated memory space
     if(game_state->board != NULL) {
         for (int r=0; r<game_state->rows; ++r) {
             free(game_state->board[r]); // free all columns
@@ -172,6 +176,7 @@ void restart_game_state(GameState *game_state) {
 }
 
 int remove_completed_lines(GameState *game_state){
+    // if there's a whole completed row -> remove it and shift above rows
     int lines = 0;
     bool completed_line;
     for(int r=4; r<game_state->rows; ++r){
@@ -200,19 +205,15 @@ int remove_completed_lines(GameState *game_state){
 /********************************************************/
 
 void init_game_state(GameState *game_state){
+    // initialise the game_state variable
     game_state->board = NULL;
-    /*
-    printf("\nEnter the number of rows: ");
-    game_state->rows = read_int_min(MIN_ROWS);
-    printf("\nEnter the number of columns: ");
-    game_state->columns = read_int_min(MIN_COLUMNS);
-    */
     make_board(game_state);
     set_default_game_state(game_state);
 }
 
 
 bool is_terminal(GameState *game_state){
+    // to see if the current game has ended
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < game_state->columns; j++) {
             if (game_state->board[i][j] == 'X'){ 
@@ -224,6 +225,7 @@ bool is_terminal(GameState *game_state){
 }
 
 void move_piece(GameState *game_state, int option){
+    // to move pieces left or right controlling the collisions
     PieceInfo *piece_info = &(game_state->current_piece);
     if (option == MOVE_LEFT) {
         piece_info->at_col--;	// move left
@@ -239,6 +241,7 @@ void move_piece(GameState *game_state, int option){
 }
 
 void rotate_piece(GameState *game_state, int option){
+    // to rotate pieces clockwise or counterclockwise keeping in mind the collisions
     PieceInfo *piece_info = &(game_state->current_piece);
     Piece temp = piece_info->p;
     if (option == ROTATE_CW) {
